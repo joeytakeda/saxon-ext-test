@@ -45,7 +45,6 @@ public class Stemmer extends ExtensionFunctionDefinition {
         }
     }
     
-    
     @Override
     public ExtensionFunctionCall makeCallExpression() {
         return new ExtensionFunctionCall() {
@@ -59,7 +58,7 @@ public class Stemmer extends ExtensionFunctionDefinition {
                     stemmer.setCurrent(orig);
                     stemmer.stem();
                     return new StringValue(stemmer.getCurrent());
-               } catch(Exception e){
+               } catch(Exception e) {
                     throw new XPathException("Unable to stem for language " + langCode); 
                }
             }
