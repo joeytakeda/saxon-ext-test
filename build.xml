@@ -19,33 +19,24 @@
         <mkdir dir="${classes.dir}"/>
         <mkdir dir="${dist.dir}"/>
     </target>
-    
-    <target name="compile.snowball">
-        <javac srcdir="${snowball.dir}" destdir="${classes.dir}"
-            includeantruntime="false">
-            <include name="org/**/**.java"/>
-        </javac>
-        <jar destfile="${snowball.jar}"
-            basedir="${classes.dir}"
-            includes="org/**/*.class"/>
-    </target>
-    
-    <target name="compile.extension">
-        <javac srcdir="${src.dir}" destdir="${classes.dir}"
+
+    <target name="compile">
+        <javac destdir="${classes.dir}"
             includeantruntime="false" classpath="${saxon.jar}">
+            <src path="${snowball.dir}"/>
+            <src path="${src.dir}"/>
             <include name="**/**.java"/>
         </javac>
-        <jar destfile="dist/extension.jar" basedir="classes" includes="com/**/*.class"/>
+        <jar 
+            destfile="${extension.jar}" 
+            basedir="${classes.dir}"
+            includes="**/**/*.class"/>
     </target>
-    
-    
-    <target name="compile" depends="compile.snowball, compile.extension"/>
     
     <target name="test">
         <java classname="net.sf.saxon.Transform" failonerror="true" fork="true">
             <classpath>
                 <path path="${extension.jar}"/>
-                <path path="${snowball.jar}"/>
                 <path path="${saxon.jar}"/>
             </classpath>
             <arg line="-it:go"/>
