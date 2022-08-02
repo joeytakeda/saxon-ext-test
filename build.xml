@@ -11,6 +11,8 @@
     <property name="snowball.jar" value="${dist.dir}/snowball.jar"/>
     <property name="extension.jar" value="${dist.dir}/extension.jar"/>
     
+    <property name="test.dir" value="${basedir}/test"/>
+    
     
     
     <target name="setup">
@@ -40,9 +42,23 @@
                 <path path="${saxon.jar}"/>
             </classpath>
             <arg line="-it:go"/>
-            <arg line="-xsl:test.xsl"/>
+            <arg line="-xsl:${test.dir}/test.xsl"/>
             <arg line="-config:saxon_config.xml"/>
         </java>
+    </target>
+    
+    <target name="dist">
+        <copy todir="${dist.dir}">
+            <fileset dir="${basedir}">
+                <include name="saxon_config.xml"/>
+            </fileset>
+        </copy>
+        <zip destfile="dist/dist.zip">
+            <fileset dir="${dist.dir}">
+                <include name="**"/>
+                <exclude name="**.zip"/>
+            </fileset>
+        </zip>
     </target>
 
     
