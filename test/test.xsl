@@ -3,7 +3,7 @@
     xmlns:xs="http://www.w3.org/2001/XMLSchema"
     xmlns:math="http://www.w3.org/2005/xpath-functions/math"
     xmlns:xd="http://www.oxygenxml.com/ns/doc/xsl"
-    xmlns:ss="https://endings.uvic.ca/staticSearch"
+    xmlns:ss="http://hcmc.uvic.ca/ns/staticSearch"
     xmlns:local="https://local.com"
     exclude-result-prefixes="#all"
     xmlns:map="http://www.w3.org/2005/xpath-functions/map"
