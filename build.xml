@@ -2,53 +2,58 @@
 
 <project name="extensionFunction" basedir="." default="all">
     
+    <property name="lib.dir" value="${basedir}/lib"/>
+    <property name="saxon.jar" value="${lib.dir}/saxon-he-10.jar"/>
+    <property name="src.dir" value="${basedir}/src"/>
+    <property name="dist.dir" value="${basedir}/dist"/>
+    <property name="classes.dir" value="${basedir}/classes"/>
+    <property name="snowball.dir" value="${lib.dir}/snowball/java"/>
+    <property name="snowball.jar" value="${dist.dir}/snowball.jar"/>
+    <property name="extension.jar" value="${dist.dir}/extension.jar"/>
     
-    <target name="compile">
-        <mkdir dir="classes"/>
-        <mkdir dir="dist"/>
-        
-        <javac srcdir="lib/stemmer/java" destdir="classes"
+    
+    
+    <target name="setup">
+        <delete dir="${classes.dir}"/>
+        <delete dir="${dist.dir}"/>
+        <mkdir dir="${classes.dir}"/>
+        <mkdir dir="${dist.dir}"/>
+    </target>
+    
+    <target name="compile.snowball">
+        <javac srcdir="${snowball.dir}" destdir="${classes.dir}"
             includeantruntime="false">
             <include name="org/**/**.java"/>
         </javac>
-        
-        <jar destfile="dist/snowball.jar" basedir="classes" includes="org/**/*.class"/>
-        
-        <javac srcdir="src" destdir="classes"
-            includeantruntime="false" verbose="no">
-            <classpath>
-                <fileset dir="${basedir}">
-                    <include name="lib/saxon-he-10.jar"/>
-                </fileset>
-            </classpath>
-            <include name="com/example/Stemmer.java"/>
-        </javac>
-        
-        <jar destfile="dist/extension.jar" basedir="classes" includes="com/**/*.class"/>
-        
-        
+        <jar destfile="${snowball.jar}"
+            basedir="${classes.dir}"
+            includes="org/**/*.class"/>
     </target>
     
-    <target name="run">
+    <target name="compile.extension">
+        <javac srcdir="${src.dir}" destdir="${classes.dir}"
+            includeantruntime="false" classpath="${saxon.jar}">
+            <include name="**/**.java"/>
+        </javac>
+        <jar destfile="dist/extension.jar" basedir="classes" includes="com/**/*.class"/>
+    </target>
+    
+    
+    <target name="compile" depends="compile.snowball, compile.extension"/>
+    
+    <target name="test">
         <java classname="net.sf.saxon.Transform" failonerror="true" fork="true">
             <classpath>
-                <fileset dir="${basedir}/dist">
-                    <include name="*.jar"/>
-                </fileset>
-                <pathelement path="${basedir}/lib/saxon-he-10.jar"/>
+                <path path="${extension.jar}"/>
+                <path path="${snowball.jar}"/>
+                <path path="${saxon.jar}"/>
             </classpath>
             <arg line="-it:go"/>
             <arg line="-xsl:test.xsl"/>
             <arg line="-config:saxon_config.xml"/>
         </java>
     </target>
+
     
-    <target name="clean">
-        <delete file="extension.jar"/>
-        <delete file="snowball.jar"/>
-        <delete dir="classes"/>
-        <delete dir="dist"/>
-    </target>
-    
-    <target name="all" depends="clean, compile, run"/>
+    <target name="all" depends="setup, compile, test"/>
 </project>
