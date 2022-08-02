@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<project name="extensionFunction" basedir="." default="all">
+<project name="extensionFunction" basedir="."
+    xmlns:if="ant:if"
+    xmlns:unless="ant:unless" default="all">
     
     <property name="lib.dir" value="${basedir}/lib"/>
     <property name="saxon.jar" value="${lib.dir}/saxon-he-10.jar"/>
@@ -60,6 +62,7 @@
             includes="**/**/*.class"/>
     </target>
     
+
     <target name="test">
         <description>
             target: test
@@ -69,6 +72,10 @@
         <echo message="${echo.separator}"/>
         <echo message="Running tests..."/>
         <echo message="${echo.separator}"/>
+        <!--Check to see if we need to unzip the data-->
+        <available property="testDataAvailable" file="${test.dir}/snowball-data-master" type="dir"/>
+        <unzip src="${test.dir}/testdata.zip" dest="${test.dir}" unless:true="${testDataAvailable}"/>
+        
         <java classname="net.sf.saxon.Transform" failonerror="true" fork="true">
             <classpath>
                 <path path="${extension.jar}"/>
