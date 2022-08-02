@@ -21,7 +21,7 @@ public class Stemmer extends ExtensionFunctionDefinition {
     
     @Override
     public StructuredQName getFunctionQName() {
-        return new StructuredQName("ss", "https://endings.uvic.ca/staticSearch", "stem");
+        return new StructuredQName("ss", "http://hcmc.uvic.ca/ns/staticSearch", "stem");
     }
 
     @Override
