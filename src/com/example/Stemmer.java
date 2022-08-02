@@ -17,6 +17,7 @@ import org.tartarus.snowball.ext.*;
 
 public class Stemmer extends ExtensionFunctionDefinition {
 
+    public Languages langList = new Languages();
     
     @Override
     public StructuredQName getFunctionQName() {
@@ -52,7 +53,7 @@ public class Stemmer extends ExtensionFunctionDefinition {
             public Sequence call(XPathContext context, Sequence[] arguments) throws XPathException {
                 String orig = ((StringValue)arguments[0]).getStringValue();
                 String langCode = ((StringValue)arguments[1]).getStringValue();
-                String lang = new Languages().get(langCode);
+                String lang = langList.get(langCode);
                 try{                 
                     SnowballStemmer stemmer = getStemmer(lang);
                     stemmer.setCurrent(orig);
