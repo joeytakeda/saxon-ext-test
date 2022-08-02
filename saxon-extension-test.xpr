@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project>
+    <meta>
+        <filters directoryPatterns="" filePatterns="\Qsaxon-extension-test.xpr\E" positiveFilePatterns="" showHiddenFiles="false"/>
+        <options/>
+    </meta>
+    <projectTree name="saxon-extension-test.xpr">
+        <folder path="."/>
+        <folder path="src/"/>
+    </projectTree>
+</project>

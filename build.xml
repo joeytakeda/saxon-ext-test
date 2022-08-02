@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<project name="extensionFunction" basedir="." default="all">
+    
+    
+    <target name="compile">
+        <mkdir dir="classes"/>
+        <mkdir dir="dist"/>
+        
+        <javac srcdir="lib/stemmer/java" destdir="classes"
+            includeantruntime="false">
+            <include name="org/**/**.java"/>
+        </javac>
+        
+        <jar destfile="dist/snowball.jar" basedir="classes" includes="org/**/*.class"/>
+        
+        <javac srcdir="src" destdir="classes"
+            includeantruntime="false" verbose="no">
+            <classpath>
+                <fileset dir="${basedir}">
+                    <include name="lib/saxon-he-10.jar"/>
+                </fileset>
+            </classpath>
+            <include name="com/example/Stemmer.java"/>
+        </javac>
+        
+        <jar destfile="dist/extension.jar" basedir="classes" includes="com/**/*.class"/>
+        
+        
+    </target>
+    
+    <target name="run">
+        <java classname="net.sf.saxon.Transform" failonerror="true" fork="true">
+            <classpath>
+                <fileset dir="${basedir}/dist">
+                    <include name="*.jar"/>
+                </fileset>
+                <pathelement path="${basedir}/lib/saxon-he-10.jar"/>
+            </classpath>
+            <arg line="-it:go"/>
+            <arg line="-xsl:test.xsl"/>
+            <arg line="-config:saxon_config.xml"/>
+        </java>
+    </target>
+    
+    <target name="clean">
+        <delete file="extension.jar"/>
+        <delete file="snowball.jar"/>
+        <delete dir="classes"/>
+        <delete dir="dist"/>
+    </target>
+    
+    <target name="all" depends="clean, compile, run"/>
+</project>
