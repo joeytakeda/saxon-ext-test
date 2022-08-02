@@ -18,12 +18,42 @@
     <xsl:output method="text"/>
     
     <xsl:variable name="githubUrl" select="'https://raw.githubusercontent.com/snowballstem/snowball-data/master/'"/>
+    
     <xsl:variable name="languages" select="map{
+        (: Can't test arabic at the moment using this process since it's a zipped file :)   
+        (:  'arabic': 'ar', :)
+        'armenian': 'hy',
+        'basque': 'eu',
+        'catalan': 'ca',
+        'danish': 'da',
+        'dutch': 'nl',
         'english': 'en',
+        'finnish': 'fi',
         'french': 'fr',
-        'german': 'de'
+        'german': 'de',
+        'greek': 'el',
+        'hindi': 'hi',
+        'hungarian': 'hu',
+        'indonesian': 'id',
+        'irish': 'ga',
+        'italian': 'it',
+        'lithuanian': 'lt',
+        (: TODO: Look for Nepali in ISO code :)
+        'norwegian': 'no',
+        'portuguese': 'pt',
+        'romanian': 'ro',
+        'russian': 'ru',
+        'serbian': 'sr',
+        'spanish': 'es',
+        'swedish': 'sv',
+        'tamil': 'ta',
+        'turkish': 'tr',
+        'yiddish': 'yi'
         }"/>
     
+   
+    
+
     <xsl:template name="go">
         <xsl:for-each select="map:keys($languages)">
             <xsl:message>Testing <xsl:value-of select="."/></xsl:message>
@@ -36,10 +66,16 @@
                 <xsl:variable name="pos" select="position()"/>
                 <xsl:variable name="stem" select="ss:stem(.,$langCode)"/>
                 <xsl:variable name="expected" select="$output[$pos]"/>
-                <xsl:message select="(if ($stem = $expected) then 'PASSED: ' else 'FAILED: ') 
+                <xsl:variable name="passed" select="($stem = $expected)"/>
+                
+                <xsl:message select="(if ($passed) then 'PASSED: ' else 'FAILED: ') 
                     || 'Input: ' || . 
                     || ' | Expected: ' ||  $expected 
-                    || ' | Actual: ' || $stem"/>
+                    || ' | Actual: ' || $stem">
+                    <xsl:if test="not($passed)">
+                        <xsl:message terminate="yes"/>
+                    </xsl:if>
+                </xsl:message>
             </xsl:for-each>
         </xsl:for-each>
     </xsl:template>
