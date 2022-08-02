@@ -9,13 +9,15 @@
     <property name="src.dir" value="${basedir}/src"/>
     <property name="dist.dir" value="${basedir}/dist"/>
     <property name="classes.dir" value="${basedir}/classes"/>
-    <property name="snowball.dir" value="${lib.dir}/snowball/java"/>
+    <property name="snowball.dir" value="${lib.dir}/snowball"/>
+    <property name="snowball.java.dir" value="${lib.dir}/snowball/java/java"/>
+    <property name="snowball.js.dir" value="${lib.dir}/snowball/js"/>
     <property name="snowball.jar" value="${dist.dir}/snowball.jar"/>
     <property name="extension.jar" value="${dist.dir}/extension.jar"/>
     <property name="test.dir" value="${basedir}/test"/>
     
     <!--Property for setting the test values-->
-    <property name="langs" value="''"/>
+    <property name="langs" value=""/>
     
     <condition property="verbose" value="true" else="false">
         <contains string="${sun.java.command}" substring="-v" />
@@ -75,7 +77,6 @@
         <!--Check to see if we need to unzip the data-->
         <available property="testDataAvailable" file="${test.dir}/snowball-data-master" type="dir"/>
         <unzip src="${test.dir}/testdata.zip" dest="${test.dir}" unless:true="${testDataAvailable}"/>
-        
         <java classname="net.sf.saxon.Transform" failonerror="true" fork="true">
             <classpath>
                 <path path="${extension.jar}"/>
@@ -104,6 +105,9 @@
                 <include name="saxon_config.xml"/>
                 <include name="README.md"/>
             </fileset>
+            <fileset dir="${snowball.dir}">
+                <include name="js/**"/>
+            </fileset>
         </copy>
         <zip destfile="dist/dist.zip">
             <fileset dir="${dist.dir}">
@@ -115,4 +119,13 @@
 
     
     <target name="all" depends="setup, compile, test, dist"/>
+    
+    <target name="quick">
+        <antcall target="setup"/>
+        <antcall target="compile"/>
+        <antcall target="test">
+            <param name="langs" value="en,fr,yi"/>
+        </antcall>
+        <antcall target="dist"/>
+    </target>
 </project>
