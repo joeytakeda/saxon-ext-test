@@ -1,8 +1,8 @@
-package com.example;
+package ca.uvic.endings.staticSearch;
 
 import java.util.HashMap;
 import java.util.Map;
-import com.example.Languages;
+import ca.uvic.endings.staticSearch.Languages;
 import net.sf.saxon.lib.ExtensionFunctionCall;
 import net.sf.saxon.lib.ExtensionFunctionDefinition;
 import net.sf.saxon.om.Sequence;

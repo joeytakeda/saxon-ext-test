@@ -13,6 +13,6 @@
 -->
 <configuration edition="HE" xmlns="http://saxon.sf.net/ns/configuration">
      <resources>
-          <extensionFunction>com.example.Stemmer</extensionFunction>
+          <extensionFunction>ca.uvic.endings.staticSearch.Stemmer</extensionFunction>
      </resources>
 </configuration>

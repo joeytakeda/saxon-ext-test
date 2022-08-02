@@ -1,4 +1,4 @@
-package com.example;
+package ca.uvic.endings.staticSearch;
 
 import java.util.HashMap;
 
@@ -35,6 +35,9 @@ public class Languages{
         LIST.put("ta", "tamil");
         LIST.put("tr", "turkish");
         LIST.put("yi", "yiddish");
+        // Special case for the Porter stemmer
+        LIST.put("porter", "porter");
+       
     }
     
     public String get(String key){
