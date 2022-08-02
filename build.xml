@@ -10,12 +10,28 @@
     <property name="snowball.dir" value="${lib.dir}/snowball/java"/>
     <property name="snowball.jar" value="${dist.dir}/snowball.jar"/>
     <property name="extension.jar" value="${dist.dir}/extension.jar"/>
-    
     <property name="test.dir" value="${basedir}/test"/>
     
+    <!--Property for setting the test values-->
+    <property name="langs" value="''"/>
+    
+    <condition property="verbose" value="true" else="false">
+        <contains string="${sun.java.command}" substring="-v" />
+    </condition>
+    
+    
+    <property name="echo.separator">*****************************</property>
     
     
     <target name="setup">
+        <description>
+            target: setup
+            
+            Target to clean old products
+        </description>
+        <echo message="${echo.separator}"/>
+        <echo message="Cleaning up old products..."/>
+        <echo message="${echo.separator}"/>
         <delete dir="${classes.dir}"/>
         <delete dir="${dist.dir}"/>
         <mkdir dir="${classes.dir}"/>
@@ -23,8 +39,17 @@
     </target>
 
     <target name="compile">
+        <description>
+            target: compile
+            
+            Compiles the extension code into a single jar
+        </description>
+        <echo message="${echo.separator}"/>
+        <echo message="Compiling classes into ${extension.jar}..."/>
+        <echo message="${echo.separator}"/>
         <javac destdir="${classes.dir}"
-            includeantruntime="false" classpath="${saxon.jar}">
+            includeantruntime="false"
+            classpath="${saxon.jar}">
             <src path="${snowball.dir}"/>
             <src path="${src.dir}"/>
             <include name="**/**.java"/>
@@ -36,6 +61,14 @@
     </target>
     
     <target name="test">
+        <description>
+            target: test
+            
+            Tests against the Snowball tests
+        </description>
+        <echo message="${echo.separator}"/>
+        <echo message="Running tests..."/>
+        <echo message="${echo.separator}"/>
         <java classname="net.sf.saxon.Transform" failonerror="true" fork="true">
             <classpath>
                 <path path="${extension.jar}"/>
@@ -44,13 +77,25 @@
             <arg line="-it:go"/>
             <arg line="-xsl:${test.dir}/test.xsl"/>
             <arg line="-config:saxon_config.xml"/>
+            <arg line="langs=${langs}"/>
+            <arg line="verbose=${verbose}"/>
         </java>
     </target>
+
     
     <target name="dist">
+        <description>
+            target: dist
+            
+            Compiles into a zip distribution
+        </description>
+        <echo message="${echo.separator}"/>
+        <echo message="Compiling dist..."/>
+        <echo message="${echo.separator}"/>
         <copy todir="${dist.dir}">
             <fileset dir="${basedir}">
                 <include name="saxon_config.xml"/>
+                <include name="README.md"/>
             </fileset>
         </copy>
         <zip destfile="dist/dist.zip">
@@ -62,5 +107,5 @@
     </target>
 
     
-    <target name="all" depends="setup, compile, test"/>
+    <target name="all" depends="setup, compile, test, dist"/>
 </project>
