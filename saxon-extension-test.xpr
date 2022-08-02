@@ -6,6 +6,5 @@
     </meta>
     <projectTree name="saxon-extension-test.xpr">
         <folder path="."/>
-        <folder path="src/"/>
     </projectTree>
 </project>
