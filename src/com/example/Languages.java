@@ -24,7 +24,7 @@ public class Languages{
         LIST.put("ga", "irish");
         LIST.put("it", "italian");
         LIST.put("lt", "lithuanian");
-        // Nepali?
+        LIST.put("ne","nepali");
         LIST.put("no", "norwegian");
         LIST.put("pt", "portuguese");
         LIST.put("ro", "romanian");

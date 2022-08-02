@@ -38,7 +38,7 @@
         'irish': 'ga',
         'italian': 'it',
         'lithuanian': 'lt',
-        (: TODO: Look for Nepali in ISO code :)
+        'nepali': 'ne',
         'norwegian': 'no',
         'portuguese': 'pt',
         'romanian': 'ro',
